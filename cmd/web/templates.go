@@ -8,8 +8,9 @@ import (
 )
 
 type templateData struct {
-	Snippet *models.Snippet
-	Snippets []*models.Snippet
+	CurrentYear int
+	Snippet     *models.Snippet
+	Snippets    []*models.Snippet
 }
 
 func netTemplateCache() (map[string]*template.Template, error) {
@@ -22,12 +23,12 @@ func netTemplateCache() (map[string]*template.Template, error) {
 
 	for _, page := range pages {
 		name := filepath.Base(page)
-		
+
 		ts, err := template.ParseFiles("./ui/html/base.tmpl.html")
 		if err != nil {
 			return nil, err
 		}
-		
+
 		ts, err = ts.ParseGlob("./ui/html/partials/*tmpl.html")
 		if err != nil {
 			return nil, err
