@@ -38,7 +38,7 @@ func netTemplateCache() (map[string]*template.Template, error) {
 			return nil, err
 		}
 
-		ts, err = ts.ParseGlob("./ui/html/partials/*tmpl.html")
+		ts, err = ts.ParseGlob("./ui/html/partials/*.tmpl.html")
 		if err != nil {
 			return nil, err
 		}
