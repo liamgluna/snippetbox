@@ -10,6 +10,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+type UserModelInterface interface {
+	Insert(name, email, password string) error
+	Authenticate(email, password string) (int, error)
+	Exists(id int) (bool, error)
+}
+
 type User struct {
 	ID             int
 	Name           string
@@ -30,7 +36,7 @@ func (m *UserModel) Insert(name, email, password string) error {
 
 	stmt := `INSERT INTO users (name, email, hashed_password, created)
 			VALUES(?, ?, ?, UTC_TIMESTAMP())`
-	
+
 	_, err = m.DB.Exec(stmt, name, email, hashedPassword)
 	if err != nil {
 		var mySQLError *mysql.MySQLError
@@ -57,7 +63,7 @@ func (m *UserModel) Authenticate(email, password string) (int, error) {
 		} else {
 			return 0, err
 		}
-		
+
 	}
 
 	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
